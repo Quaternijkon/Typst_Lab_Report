@@ -40,7 +40,9 @@
   watermark: "",
   body,
 ) = {
-  set page("a4")
+  set page("a4",
+  margin: (x: 1.5cm,y: 2cm)
+  )
   // 封面
   align(center)[
     #image("../Typst_USTC_CS/assets/img/ustc-name.svg", width: 70%)
@@ -89,28 +91,11 @@
   ]
   pagebreak()
 
-  set page(
-  header: context {
-  let elems = query(
-    selector(heading).before(here()),
-  )
-  let academy = smallcaps[
-    #course -- #lab_name
-  ]
-  if elems.len() == 0 {
-    align(right, academy)
-  } else {
-    let body = elems.last().body
-    academy + h(1fr) + emph(body)
-  }
-}, 
-  number-align: right,
-  numbering: "1 / 1",
-)
+
 
     // 水印
   set page(background: rotate(-60deg,
-  text(240pt, fill: rgb("#034da109"))[
+  text(240pt, fill: rgb("#034ea10a"), font:"Times New Roman")[
       #strong()[#watermark]
     ]
   ),
@@ -129,15 +114,26 @@
     it
   }
   outline(
-    title: text(font: Xbs, size: 16pt)[目录],
+    title: text(font: Xbs, size: 16pt, fill: rgb("#034ea1"))[目录],
     indent: auto,
   )
-  // if show_content_figure {
-  //   text(font: Xbs, size: 10pt)[
-  //     #i-figured.outline(title: [图表2])
-  //   ]
-  // }
+  if show_content_figure {
+    text(font: Xbs, size: 10pt)[
+      #i-figured.outline(title: [图表])
+    ]
+  }
   pagebreak()
+
+  set page(
+  columns: 2,
+  header: [
+    #set text(8pt)
+    #course -- #lab_name
+    #h(1fr) #text(font:Xbs,fill:rgb("#034ea1"))[USTC]
+  ],
+  number-align: right,
+  numbering: "壹 / 壹",
+)
 
   // 页眉页脚设置
   // show: chic.with(

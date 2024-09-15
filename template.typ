@@ -128,9 +128,7 @@
           #course -- #lab_name
         ],
       ),
-      right-side: text(size: 10pt, font: Xbs)[
-        #chic-heading-name(dir: "prev")
-      ],
+      right-side: image("../Typst_USTC_CS/assets/img/ustc_logo_side.svg", width: 60%),
       side-width: (60%, 0%, 35%),
     ),
     chic-footer(
