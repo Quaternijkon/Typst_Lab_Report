@@ -43,30 +43,32 @@
   set page("a4")
   // 封面
   align(center)[
-    #image("./img/NKU-name.png", width: 70%)
-    #v(2em)
-    #set text(
-      size: 26pt,
-      font: Zhongsong,
-      weight: "bold",
-    )
+    #image("../Typst_USTC_CS/assets/img/ustc-name.svg", width: 70%)
+    #v(1em)
+    // #set text(
+    //   size: 26pt,
+    //   font: Zhongsong,
+    //   weight: "bold",
+    // )
 
     // 课程名
     #text(size: 25pt, font: Xbs)[
       _#course _课程实验报告
     ]
-    #v(1em)
+    // #v(1em)
 
     // 报告名
     #text(size: 22pt, font: Xbs)[
       _#lab_name _
     ]
-    #image("./img/NKU-logo.png", width: 40%)
-    #v(0.5em)
+    // #v(0.5em)
+
+    #image("./assets/USTC-NO-TEXT.svg", width: 60%)
+    // #v(0.5em)
 
     // 个人信息
     #grid(
-      columns: (70pt, 160pt),
+      columns: (70pt, 240pt),
       rows: (40pt, 40pt),
       gutter: 3pt,
       info_key("学院"),
@@ -78,7 +80,7 @@
       info_key("学号"),
       info_value(stu_num),
     )
-    #v(1pt)
+    // #v(1pt)
 
     // 日期
     #text(font: Zhongsong, size: 14pt)[
@@ -86,6 +88,14 @@
     ]
   ]
   pagebreak()
+
+    // 水印
+  set page(background: rotate(-60deg,
+  text(240pt, fill: rgb("#034da109"))[
+      #strong()[#watermark]
+    ]
+  ),
+  )
 
   // 目录
   show outline.entry.where(level: 1): it => {
@@ -103,11 +113,11 @@
     title: text(font: Xbs, size: 16pt)[目录],
     indent: auto,
   )
-  if show_content_figure {
-    text(font: Xbs, size: 10pt)[
-      #i-figured.outline(title: [图表])
-    ]
-  }
+  // if show_content_figure {
+  //   text(font: Xbs, size: 10pt)[
+  //     #i-figured.outline(title: [图表2])
+  //   ]
+  // }
   pagebreak()
 
   // 页眉页脚设置
@@ -128,7 +138,8 @@
         #chic-page-number()
       ],
     ),
-    chic-separator(on: "header", chic-styled-separator("bold-center")),
+    chic-separator(1pt),
+    // chic-separator(on: "header", chic-styled-separator("bold-center")),
     chic-separator(on: "footer", stroke(dash: "loosely-dashed", paint: gray)),
     chic-offset(40%),
     chic-height(2cm),
@@ -185,12 +196,7 @@
   )
   show raw.where(lang: "pintora"): it => pintorita.render(it.text)
 
-  // 水印
-  set page(background: rotate(-60deg,
-  text(100pt, fill: rgb("#faf2f1"))[
-      #strong()[#watermark]
-    ]
-  ))
+
 
   body
 }
