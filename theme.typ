@@ -70,19 +70,43 @@
 
     // 个人信息
     #grid(
-      columns: (70pt, 240pt),
+      columns: (40pt, 270pt,40pt),
       rows: (40pt, 40pt),
-      gutter: 3pt,
+      gutter: 0pt,
       info_key("学院"),
       info_value(department),
+      rect(
+        width: 100%,
+        inset: 2pt,
+        stroke: (bottom: 1pt + black),
+        text(font: Zhongsong, size: 16pt, bottom-edge: "descender", fill: white)[#department.at(0)],
+      ),
       info_key("专业"),
       info_value(major),
+      rect(
+        width: 100%,
+        inset: 2pt,
+        stroke: (bottom: 1pt + black),
+        text(font: Zhongsong, size: 16pt, bottom-edge: "descender", fill: white)[#major.at(0)],
+      ),
       info_key("姓名"),
       info_value(stu_name),
+      rect(
+        width: 100%,
+        inset: 2pt,
+        stroke: (bottom: 1pt + black),
+        text(font: Zhongsong, size: 16pt, bottom-edge: "descender", fill: white)[#stu_name.at(0)],
+      ),
       info_key("学号"),
       info_value(stu_num),
+      rect(
+        width: 100%,
+        inset: 2pt,
+        stroke: (bottom: 1pt + black),
+        text(font: Zhongsong, size: 16pt, bottom-edge: "descender", fill: white)[#stu_num.at(0)],
+      ),
     )
-    // #v(1pt)
+    #v(2em)
 
     // 日期
     #text(font: Zhongsong, size: 14pt)[
@@ -95,7 +119,7 @@
 
     // 水印
   set page(background: rotate(-60deg,
-  text(240pt, fill: rgb("#034ea10a"), font:"Times New Roman")[
+  text(240pt, fill: rgb("#034ea110"), font:"Times New Roman")[
       #strong()[#watermark]
     ]
   ),
@@ -131,9 +155,148 @@
     #course -- #lab_name
     #h(1fr) #text(font:Xbs,fill:rgb("#034ea1"))[USTC]
   ],
-  number-align: right,
-  numbering: "壹 / 壹",
+  // number-align: right,
+  // numbering: "壹 / 壹",
 )
+
+set page(
+    footer: context {
+      // 获取当前页码
+      let i = counter(page).at(here()).first()
+
+      // 根据奇偶页设置对齐方式
+      let is-odd = calc.odd(i)
+      let aln = if is-odd { right } else { left }
+
+      // 获取所有一级和二级标题
+      let level1_headings = heading.where(level: 1)
+      let level2_headings = heading.where(level: 2)
+
+      // 检查当前页是否包含一级标题
+      if query(level1_headings).any(it => it.location().page() == i) {
+        // 仅显示页码
+        return align(aln)[#text(fill: rgb("#034ea1"), size: 2em)[#i]]
+      }
+
+      // 检查当前页是否包含二级标题
+      if query(level2_headings).any(it => it.location().page() == i) {
+        // 获取当前的一级标题（在当前位置之前的最后一个）
+        let previous_level1 = query(level1_headings.before(here())).last()
+        let gap = 0.5em  // 调整间距
+        let chapter = upper(text(size: 0.68em, previous_level1.body))
+
+        // 显示页码和一级标题
+        if is-odd {
+          return align(aln)[
+            #grid(
+              columns: (40em,2em),
+              [#chapter],
+              text(fill: rgb("#034ea1"))[#i], 
+            )
+            
+          ]
+        } else {
+          return align(aln)[
+            #grid(
+              columns: (2em,40em),
+              text(fill: rgb("#034ea1"))[#i],
+              [#chapter],
+              
+            )
+            
+          ]
+        }
+      }
+
+      // 当前页既不包含一级标题也不包含二级标题
+      // 获取当前的一级和二级标题
+      let previous_level1 = query(level1_headings.before(here())).last()
+      let previous_level2_query = query(level2_headings.before(here()))
+      let previous_level2 = if previous_level2_query.len() > 0 {
+        previous_level2_query.last()
+      } else {
+        none
+      }
+
+      // let gap = 0.01em  // 调整间距
+      let chapter = upper(text(size: 0.68em, previous_level1.body))
+
+      // 检查是否存在二级标题
+      if previous_level2 != none {
+        let section = upper(text(size: 0.6em, previous_level2.body))  // 二级标题字号更小
+
+        // 显示页码、一级标题和二级标题，二级标题在一级标题下方
+        if is-odd {
+          return align(aln)[
+            #grid(
+              columns: (40em,2em),
+              rows: (1fr,1fr,1fr),
+              gutter: 0pt,
+              [#chapter],
+              grid.cell(
+                rowspan: 2,
+                align(horizon)[#text(fill: rgb("#034ea1"))[#i]]
+              ),
+              [#section],
+              
+              
+            
+            )
+            
+            
+          ]
+        } else {
+          return align(aln)[
+            #grid(
+              columns: (2em,40em),
+              rows: (1fr,1fr,1fr),
+              gutter: 0pt,
+              grid.cell(
+                rowspan: 2,
+                align(horizon)[#text(fill: rgb("#034ea1"))[#i]]
+              ),
+              [#chapter],
+              [#section],
+              
+            )
+          ]
+        }
+      } else {
+        // 如果没有二级标题，仅显示页码和一级标题
+        if is-odd {
+          return align(aln)[
+            #grid(
+              columns: (40em,2em),
+              [#chapter],
+              text(fill: rgb("#034ea1"))[#i], 
+            )
+            
+              // #chapter
+              // #v(gap)
+              // #i
+            
+          ]
+        } else {
+          return align(aln)[
+            #grid(
+              columns: (2em,40em),
+              text(fill: rgb("#034ea1"))[#i],
+              [#chapter],
+              
+            )
+            
+              // #i
+              // #v(gap)
+              // #chapter
+            
+          ]
+        }
+      }
+    },
+)
+
+
+
 
   // 页眉页脚设置
   // show: chic.with(
@@ -168,6 +331,7 @@
   show math.equation: i-figured.show-equation
   set text(
     font: Songti,
+    // font:"Linux Libertine",
     size: 12pt,
   )
   set par(    // 段落设置
@@ -186,7 +350,7 @@
     #v(5pt)
   ]
   show link: it => {          // 链接
-    set text(fill: blue.darken(20%))
+    set text(fill: rgb("#034ea1"))
     it
   }
   show: gentle-clues.with(    // gentle块
