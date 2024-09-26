@@ -11,5 +11,6 @@
   show_content_figure: true,
   watermark: "USTC",
 )
+#show :show-cn-fakebold
 
 #include "content.typ"
