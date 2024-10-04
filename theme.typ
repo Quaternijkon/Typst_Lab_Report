@@ -331,8 +331,8 @@ set page(
   )
   set par(    // 段落设置
     justify: false,
-    leading: 1.04em,
-    first-line-indent: 2em,
+    // leading: 1.04em,
+    // first-line-indent: 2em,
   )
   show heading: it => box(width: 100%)[ // 标题设置
     #v(0.45em)
