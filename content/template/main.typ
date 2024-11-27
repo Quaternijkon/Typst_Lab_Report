@@ -1,4 +1,5 @@
-#import "theme.typ": *
+#import "@preview/lab-report-template-ustc:1.0.0":*
+// #import "../../theme.typ": *
 
 #show: project.with(
   course: "计算机系统",
@@ -13,4 +14,4 @@
 )
 #show :show-cn-fakebold
 
-#include "content.typ"
+= 从这开始

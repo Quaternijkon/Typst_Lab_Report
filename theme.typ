@@ -1,14 +1,19 @@
 // #import "@preview/chic-hdr:0.4.0": *
 #import "lib.typ": *
 
+#let CODE_SIZE=8pt
+#let TEXT_SIZE=10pt
+
 #let Heiti = ("Times New Roman", "Heiti SC", "Heiti TC", "SimHei")
 #let Songti = ("Times New Roman", "Songti SC", "Songti TC", "SimSun")
 #let Zhongsong = ("Times New Roman", "STZhongsong", "SimSun")
 #let Xbs = ("Times New Roman", "FZXiaoBiaoSong-B05", "FZXiaoBiaoSong-B05S")
 
-#let indent() = {
-  box(width: 2em)
-}
+// #let indent() = {
+//   box(width: 2em)
+// }
+// 
+
 
 #let info_key(body) = {
   rect(width: 100%, inset: 2pt, stroke: none, text(font: Zhongsong, size: 16pt, body))
@@ -35,6 +40,8 @@
   watermark: "",
   body,
 ) = {
+
+  show raw: set text(font: ("Jetbrains Mono NL","PingFang SC","Iosevka", "Fira Mono"), size: CODE_SIZE)
   set page("a4",
   margin: (x: 1.5cm,y: 2cm)
   )
@@ -114,7 +121,7 @@
 
     // 水印
   set page(background: rotate(-60deg,
-  text(240pt, fill: rgb("#034ea110"), font:"Times New Roman")[
+  text(240pt, fill: rgb("#034ea10f"), font:"Times New Roman")[
       #strong()[#watermark]
     ]
   ),
@@ -319,20 +326,22 @@ set page(
   // )
 
   // 正文设置
-  set heading(numbering: "1.1")
+  // 
+  set heading(numbering: "1.1.1.")
   set figure(supplement: [图])
   show heading: i-figured.reset-counters.with(level: 2)
   show figure: i-figured.show-figure.with(level: 2)
-  show math.equation: i-figured.show-equation
+  // set math.equation(numbering: none)
+  // show math.equation: i-figured.show-equation
   set text(
     font: Songti,
     // font:"Linux Libertine",
-    size: 12pt,
+    size: TEXT_SIZE,
   )
   set par(    // 段落设置
     justify: false,
-    leading: 1.04em,
-    first-line-indent: 2em,
+    // leading: 1.04em,
+    // first-line-indent: 2em,
   )
   show heading: it => box(width: 100%)[ // 标题设置
     #v(0.45em)
@@ -361,16 +370,43 @@ set page(
 
   // 代码段设置
   show: codly-init.with()
+  // codly(
+  //   display-icon: true,
+  //   stroke-color: luma(200),
+  //   zebra-color: luma(0).transparentize(96%),
+  //   fill: rgb("ffffff").transparentize(100%),
+  //   enable-numbers: true,
+  //   breakable: true,
+  //   languages: (
+  //     rust: (
+  //       name: "Rust",
+  //       icon: text(font: "tabler-icons", "\u{fa53}"),
+  //       color: rgb("#CE412B")
+  //     ),
+  //   )
+  // )
+
   codly(
-    display-icon: false,
-    stroke-color: luma(200),
-    zebra-color: luma(240),
-    enable-numbers: true,
+    display-icon: true,
+    // default-color: rgb("#283593"),
+    fill: rgb("ffffff").transparentize(100%),
+    stroke: 1pt + luma(200),
+    // fill:none,
+    zebra-fill: luma(0).transparentize(96%),
     breakable: true,
+    // number-format: none,
+    languages: (
+      rust: (
+        name: "Rust",
+        icon: text(font: "tabler-icons", "\u{fa53}"),
+        color: rgb("#CE412B")
+      ),
+    )
   )
-  show raw.where(lang: "pintora"): it => pintorita.render(it.text)
-
-
+  // show raw.where(lang: "pintora"): it => pintorita.render(it.text)
+  
 
   body
+
+  
 }
